@@ -25,12 +25,15 @@ docker compose up -d --build
 Aplikacja działa pod `http://localhost:5000`. Pliki mp3 trafiają do `./data/output/<katalog>`, a baza
 leży w `./data/config/app.db`.
 
-Kontener działa jako użytkownik `${UID:-1000}:${GID:-1000}`. Jeśli Twój UID jest inny, zapisz go w pliku `.env`
-obok `docker-compose.yml`, żeby pliki na dysku miały właściwego właściciela:
+Ustawienia dla compose trzymaj w pliku `.env` obok `docker-compose.yml` (wzór: `.env.example`):
 
 ```sh
-printf 'UID=%s\nGID=%s\n' "$(id -u)" "$(id -g)" > .env
+cp .env.example .env
 ```
+
+- `HOST_PORT` – port na hoście (domyślnie `5000`).
+- `UID` / `GID` – użytkownik, jako który działa kontener (domyślnie `1000:1000`). Ustaw na wynik
+  `id -u` / `id -g`, żeby pliki na dysku miały właściwego właściciela.
 
 Katalogi `data/*` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
 i kontener nie będzie mógł w nich pisać.

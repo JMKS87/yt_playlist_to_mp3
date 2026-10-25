@@ -3,7 +3,7 @@ services:
     build: .
     image: yt2mp3
     ports:
-      - "5000:5000"
+      - "${HOST_PORT:-5000}:5000"
     volumes:
       - ./data/output:/data/output
       - ./data/config:/data/config
