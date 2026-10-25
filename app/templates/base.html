@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% block head %}{% endblock %}
+<title>{% block title %}YT → MP3{% endblock %}</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 72rem; margin: 0 auto; padding: 1rem; color: #222; }
+  nav { border-bottom: 1px solid #ccc; padding-bottom: .5rem; margin-bottom: 1rem; }
+  nav a { margin-right: 1rem; text-decoration: none; }
+  nav a.active { font-weight: bold; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { text-align: left; padding: .3rem .5rem; border-bottom: 1px solid #e5e5e5; vertical-align: top; }
+  textarea { width: 100%; font-family: monospace; }
+  .errors { color: #b00; border: 1px solid #b00; padding: .2rem 1rem; }
+  .muted { color: #777; font-weight: normal; }
+  .child td:first-child { padding-left: 2rem; }
+  .st-queued { color: #777; } .st-running { color: #06c; font-weight: bold; }
+  .st-done { color: #070; } .st-skipped { color: #a70; } .st-error { color: #b00; font-weight: bold; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="{{ url_for('main.index') }}" {% if request.endpoint == 'main.index' %}class="active"{% endif %}>Nowe</a>
+  <a href="{{ url_for('main.jobs') }}" {% if request.endpoint == 'main.jobs' %}class="active"{% endif %}>Status</a>
+  <a href="{{ url_for('main.files') }}" {% if request.endpoint == 'main.files' %}class="active"{% endif %}>Pliki</a>
+</nav>
+{% block content %}{% endblock %}
+</body>
+</html>

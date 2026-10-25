@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block head %}{% if active %}<meta http-equiv="refresh" content="5">{% endif %}{% endblock %}
+{% block title %}Status · YT → MP3{% endblock %}
+{% block content %}
+{% set labels = {"queued": "w kolejce", "running": "w trakcie", "done": "gotowe", "skipped": "pominięte", "error": "błąd"} %}
+<h1>Status</h1>
+{% if active %}<p class="muted">Strona odświeża się co 5 s, dopóki coś jest w kolejce.</p>{% endif %}
+
+{% for job in jobs %}
+<section>
+  <h2>Zlecenie #{{ job.id }}
+    <small class="muted">{{ job.created_at|localtime }} · {{ job.quality }} kbps · {{ job.out_dir }}{% if job.overwrite %} · nadpisywanie{% endif %}</small>
+  </h2>
+  {% set counts = job.entries|status_counts %}
+  {% if counts %}
+  <p class="muted">Filmy: {% for status in ["done", "skipped", "error", "running", "queued"] if counts[status] %}{{ labels[status] }} {{ counts[status] }}{% if not loop.last %} · {% endif %}{% endfor %}</p>
+  {% endif %}
+  <table>
+    <tr><th>Pozycja</th><th>Status</th><th>Komunikat</th></tr>
+    {% for item in job.entries %}
+    <tr {% if item.parent_id %}class="child"{% endif %}>
+      <td>
+        {% if item.kind == "playlist" %}
+        Playlista: <a href="https://www.youtube.com/playlist?list={{ item.yt_id }}">{{ item.title or item.yt_id }}</a>
+        {% else %}
+        <a href="https://www.youtube.com/watch?v={{ item.yt_id }}">{{ item.title or item.yt_id }}</a>
+        {% endif %}
+      </td>
+      <td class="st-{{ item.status }}">{{ labels[item.status] }}</td>
+      <td>{{ item.message or "" }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+{% else %}
+<p>Brak zleceń.</p>
+{% endfor %}
+{% endblock %}

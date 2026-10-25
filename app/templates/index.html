@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Nowe zlecenie</h1>
+
+{% if errors or line_errors %}
+<div class="errors">
+  <p>Nic nie zostało dodane do kolejki. Popraw błędy:</p>
+  <ul>
+    {% for error in errors %}<li>{{ error }}</li>{% endfor %}
+    {% for lineno, line, message in line_errors %}
+    <li>Linia {{ lineno }} (<code>{{ line }}</code>): {{ message }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<form method="post">
+  <p>
+    <label for="links">Linki do filmów lub playlist YouTube albo same ID filmów, jeden na linię:</label><br>
+    <textarea id="links" name="links" rows="12" required>{{ form.links }}</textarea>
+  </p>
+  <p>
+    <label for="quality">Jakość:</label>
+    <select id="quality" name="quality">
+      {% for q in qualities %}
+      <option value="{{ q }}" {% if q == form.quality %}selected{% endif %}>{{ q }} kbps</option>
+      {% endfor %}
+    </select>
+  </p>
+  <p>
+    <label for="out_dir">Katalog (względem katalogu wyjściowego):</label>
+    <input id="out_dir" name="out_dir" value="{{ form.out_dir }}" size="40">
+  </p>
+  <p>
+    <label><input type="checkbox" name="overwrite" {% if form.overwrite %}checked{% endif %}>
+      Nadpisuj: pobierz ponownie filmy, które są już w bazie</label>
+  </p>
+  <p><button type="submit">Dodaj do kolejki</button></p>
+</form>
+{% endblock %}

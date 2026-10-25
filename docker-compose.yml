@@ -1,0 +1,15 @@
+services:
+  yt2mp3:
+    build: .
+    image: yt2mp3
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data/output:/data/output
+      - ./data/config:/data/config
+    environment:
+      TZ: Europe/Warsaw
+      OUTPUT_ROOT: /data/output
+      DB_PATH: /data/config/app.db
+    user: "${UID:-1000}:${GID:-1000}"
+    restart: unless-stopped

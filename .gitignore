@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# IDE
+.idea/
+
+# Runtime data (downloads, SQLite db)
+data/
+*.db
+
+# Media
+*.mp3
+
+# Env
+.env

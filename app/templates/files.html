@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Pliki · YT → MP3{% endblock %}
+{% block content %}
+<h1>Pliki</h1>
+<table>
+  <tr><th>Przetworzono</th><th>Tytuł</th><th>Kanał</th><th>Publikacja</th><th>Plik</th><th>Jakość</th></tr>
+  {% for video in videos %}
+  <tr>
+    <td>{{ video.processed_at|localtime }}</td>
+    <td><a href="https://www.youtube.com/watch?v={{ video.video_id }}">{{ video.title or video.video_id }}</a></td>
+    <td>{{ video.channel or "" }}</td>
+    <td>{{ video.upload_date or "" }}</td>
+    <td><code>{{ video.file_path }}</code></td>
+    <td>{{ video.quality }} kbps</td>
+  </tr>
+  {% else %}
+  <tr><td colspan="6">Brak plików.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}
