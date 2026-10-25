@@ -96,7 +96,7 @@ Każdą niepustą linię przycinamy z białych znaków, a powtórzenia w obrębi
 ## Docker
 - **Dockerfile**: `python:3.12-slim` + `apt-get install ffmpeg` + binarka Deno (`COPY --from=denoland/deno:bin-<wersja> /deno /usr/local/bin/deno`). Obecny yt-dlp potrzebuje zewnętrznego runtime'u JS (oraz `yt-dlp-ejs`, który przychodzi z `yt-dlp[default]`) do pełnej obsługi YouTube; przy implementacji trzeba to sprawdzić z aktualną dokumentacją yt-dlp. Dalej: `pip install -r requirements.txt`, użytkownik bez roota, `EXPOSE 5000`.
 - **CMD**: `gunicorn -w 1 --threads 4 -b 0.0.0.0:5000 "app:create_app()"`. Musi być **jeden** worker gunicorna, bo wątek pobierający żyje w procesie.
-- **docker-compose.yml**: port `5000:5000`, wolumeny `./data/output:/data/output` i `./data/config:/data/config`, zmienne `TZ=Europe/Warsaw`, `OUTPUT_ROOT`, `DB_PATH=/data/config/app.db`, ustawienie `user: "${UID:-1000}:${GID:-1000}"`, `restart: unless-stopped`.
+- **docker-compose.yml**: port `5000:5000`, wolumeny `${OUTPUT_DIR:-./output}:/data/output` i `./config:/data/config`, zmienne `TZ=Europe/Warsaw`, `OUTPUT_ROOT`, `DB_PATH=/data/config/app.db`, ustawienie `user: "${UID:-1000}:${GID:-1000}"`, `restart: unless-stopped`.
 - **README**: uruchomienie, aktualizacja yt-dlp (podbić wersję w `requirements.txt`, potem `docker compose build && docker compose up -d`), lokalny dev na Windows (wymaga ffmpeg i deno w PATH, start przez `flask --app app run`).
 
 ## Poza zakresem (świadomie)
@@ -110,4 +110,4 @@ Autoryzacja, cookies dla filmów z ograniczeniem wieku, okładki, usuwanie wpis�
    - ponowne wysłanie tych samych linków: pozycje `skipped`
    - ponowne wysłanie z „nadpisuj” i inną ścieżką: nowy plik jest w nowym miejscu, stary zostaje, wpis w `/files` jest zaktualizowany
    - błędny link: formularz wraca z błędem i zachowaną treścią
-   - restart kontenera w trakcie pracy: kolejka zostaje dokończona, a baza przetrwała w `./data/config`.
+   - restart kontenera w trakcie pracy: kolejka zostaje dokończona, a baza przetrwała w `./config`.

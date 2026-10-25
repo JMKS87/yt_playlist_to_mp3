@@ -18,12 +18,12 @@ Bez autoryzacji: aplikacja jest przeznaczona do sieci lokalnej.
 ## Uruchomienie (Docker)
 
 ```sh
-mkdir -p data/output data/config
+mkdir -p output config
 docker compose up -d --build
 ```
 
-Aplikacja działa pod `http://localhost:5000`. Pliki mp3 trafiają do `./data/output/<katalog>` (lub do `DATA_DIR`, patrz niżej), a baza
-leży w `./data/config/app.db`.
+Aplikacja działa pod `http://localhost:5000`. Pliki mp3 trafiają do `./output/<katalog>` (lub do `OUTPUT_DIR`, patrz niżej), a baza
+leży zawsze w `./config/app.db` (katalog obok `Dockerfile`, niekonfigurowalny).
 
 Ustawienia dla compose trzymaj w pliku `.env` obok `docker-compose.yml` (wzór: `.env.example`):
 
@@ -32,12 +32,12 @@ cp .env.example .env
 ```
 
 - `HOST_PORT` – port na hoście (domyślnie `5000`).
-- `DATA_DIR` – folder na hoście z danymi (domyślnie `./data`); w nim powstają `output/` i `config/`.
+- `OUTPUT_DIR` – folder na hoście na pliki mp3 (domyślnie `./output`).
   Może być ścieżką bezwzględną, np. `/mnt/muzyka/yt2mp3`.
 - `UID` / `GID` – użytkownik, jako który działa kontener (domyślnie `1000:1000`). Ustaw na wynik
   `id -u` / `id -g`, żeby pliki na dysku miały właściwego właściciela.
 
-Katalogi `output` i `config` w `DATA_DIR` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
+Katalogi `OUTPUT_DIR` i `./config` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
 i kontener nie będzie mógł w nich pisać.
 
 Gunicorn musi mieć **jeden** worker (`-w 1`), bo wątek pobierający żyje w procesie aplikacji.
@@ -67,7 +67,7 @@ pip install -r requirements.txt pytest
 flask --app app run
 ```
 
-Bez ustawionych zmiennych `OUTPUT_ROOT` i `DB_PATH` aplikacja używa `./data/output` i `./data/config/app.db`.
+Bez ustawionych zmiennych `OUTPUT_ROOT` i `DB_PATH` aplikacja używa `./output` i `./config/app.db`.
 Z `--debug` worker startuje tylko w procesie potomnym reloadera, więc nie uruchomi się dwa razy.
 
 Testy:

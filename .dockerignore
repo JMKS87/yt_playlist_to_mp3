@@ -1,7 +1,8 @@
 .venv/
 .idea/
 .git/
-data/
+output/
+config/
 tests/
 **/__pycache__/
 **/*.pyc

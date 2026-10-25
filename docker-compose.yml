@@ -5,8 +5,8 @@ services:
     ports:
       - "${HOST_PORT:-5000}:5000"
     volumes:
-      - ${DATA_DIR:-./data}/output:/data/output
-      - ${DATA_DIR:-./data}/config:/data/config
+      - ${OUTPUT_DIR:-./output}:/data/output
+      - ./config:/data/config
     environment:
       TZ: Europe/Warsaw
       OUTPUT_ROOT: /data/output

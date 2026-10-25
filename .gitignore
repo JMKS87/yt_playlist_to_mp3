@@ -9,7 +9,8 @@ venv/
 .idea/
 
 # Runtime data (downloads, SQLite db)
-data/
+output/
+config/
 *.db
 
 # Media
