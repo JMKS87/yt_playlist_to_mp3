@@ -18,7 +18,6 @@ Bez autoryzacji: aplikacja jest przeznaczona do sieci lokalnej.
 ## Uruchomienie (Docker)
 
 ```sh
-mkdir -p output config
 docker compose up -d --build
 ```
 
@@ -37,8 +36,9 @@ cp .env.example .env
 - `UID` / `GID` – użytkownik, jako który działa kontener (domyślnie `1000:1000`). Ustaw na wynik
   `id -u` / `id -g`, żeby pliki na dysku miały właściwego właściciela.
 
-Katalogi `OUTPUT_DIR` i `./config` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
-i kontener nie będzie mógł w nich pisać.
+Katalogi `./config` i `./output` są w repozytorium (puste, z `.gitkeep`). Własny `OUTPUT_DIR` utwórz przed pierwszym
+startem (`mkdir -p <ścieżka>`): jeśli utworzy go Docker, będzie należał do roota i kontener nie będzie mógł w nim pisać.
+To samo dotyczy `./config`, gdyby został usunięty.
 
 Gunicorn musi mieć **jeden** worker (`-w 1`), bo wątek pobierający żyje w procesie aplikacji.
 Kolejka jest w bazie, więc po restarcie kontenera przerwane pozycje wracają do kolejki i są dokończone.

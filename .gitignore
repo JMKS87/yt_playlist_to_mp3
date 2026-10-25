@@ -8,9 +8,11 @@ venv/
 # IDE
 .idea/
 
-# Runtime data (downloads, SQLite db)
-output/
-config/
+# Runtime data (downloads, SQLite db); katalogi są w repo (.gitkeep), żeby nie zakładał ich Docker jako root
+output/*
+!output/.gitkeep
+config/*
+!config/.gitkeep
 *.db
 
 # Media
