@@ -22,7 +22,7 @@ mkdir -p data/output data/config
 docker compose up -d --build
 ```
 
-Aplikacja działa pod `http://localhost:5000`. Pliki mp3 trafiają do `./data/output/<katalog>`, a baza
+Aplikacja działa pod `http://localhost:5000`. Pliki mp3 trafiają do `./data/output/<katalog>` (lub do `DATA_DIR`, patrz niżej), a baza
 leży w `./data/config/app.db`.
 
 Ustawienia dla compose trzymaj w pliku `.env` obok `docker-compose.yml` (wzór: `.env.example`):
@@ -32,10 +32,12 @@ cp .env.example .env
 ```
 
 - `HOST_PORT` – port na hoście (domyślnie `5000`).
+- `DATA_DIR` – folder na hoście z danymi (domyślnie `./data`); w nim powstają `output/` i `config/`.
+  Może być ścieżką bezwzględną, np. `/mnt/muzyka/yt2mp3`.
 - `UID` / `GID` – użytkownik, jako który działa kontener (domyślnie `1000:1000`). Ustaw na wynik
   `id -u` / `id -g`, żeby pliki na dysku miały właściwego właściciela.
 
-Katalogi `data/*` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
+Katalogi `output` i `config` w `DATA_DIR` utwórz przed pierwszym startem. Jeśli utworzy je Docker, będą należały do roota
 i kontener nie będzie mógł w nich pisać.
 
 Gunicorn musi mieć **jeden** worker (`-w 1`), bo wątek pobierający żyje w procesie aplikacji.
